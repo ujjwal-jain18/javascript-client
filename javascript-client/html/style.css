@@ -1,0 +1,44 @@
+.container {
+    position: relative;
+    width: 90%;
+    flex-direction: column;
+    margin-top: 10%;
+    margin-left: 5%;
+    justify-content: center;
+    box-shadow: 10px 5px 5px #bdb2b2;
+
+}
+
+.block1 {
+    display: flex;
+    padding: 1%;
+    border: 1px solid #dcd6d6;
+}
+.block2 {
+    display: flex;
+    border: 1px solid #dcd6d6;
+}
+.Payment{
+    display: flex;
+    width: 60%;
+    padding: 1%;
+}
+.cart{
+    width: 40%;
+    padding: 1%;
+    background-color: #e4e4e4;
+}
+.list-1{
+    display: inline;
+}
+.list-1 +::before {
+    content: "/";
+}
+.list{
+    width: 25%;
+    padding-left: 10%;
+}
+.fa{
+    position: absolute;
+    margin-left: 96%;
+}
