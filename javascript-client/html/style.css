@@ -1,11 +1,13 @@
+body {
+    background-image: url("./images/background.jpg");
+}
 .container {
     position: relative;
     width: 90%;
     flex-direction: column;
-    margin-top: 10%;
+    padding: 2%;
     margin-left: 5%;
     justify-content: center;
-    box-shadow: 10px 5px 5px #bdb2b2;
 
 }
 
@@ -13,20 +15,84 @@
     display: flex;
     padding: 1%;
     border: 1px solid #dcd6d6;
+    background-color: white;
 }
 .block2 {
     display: flex;
     border: 1px solid #dcd6d6;
+    background-color: white;
 }
 .Payment{
     display: flex;
     width: 60%;
     padding: 1%;
+    flex-direction: column;
+}
+.imag {
+    display: flex;
+    flex-direction: row;
+}
+figure:hover {
+    border-radius: 1px;
+    border: 1px solid #e4e4e4;
+    background-color: #e4e4e4;
+}
+figure {
+    width: 28%;
+    text-align: left;
+    font-size: 15px;
+    margin: 1%;
+    padding: 2%;
 }
 .cart{
+    display: flex;
+    flex-direction: column;
     width: 40%;
     padding: 1%;
-    background-color: #e4e4e4;
+    background-color: #fbfbfb;
+}
+.amt {
+    margin-left: 1%;
+    width: 125%;
+    flex: 1;
+    text-align: left;
+    font-size: medium;
+}
+.price {
+    width: 50%;
+    text-align: right;
+    flex:1;
+    font-size: 15px;
+}
+.black {
+    margin-left: 1%;
+    flex: 1;
+    width: 125%;
+    text-align: left;
+    font-size: 14px;
+}
+.block3 {
+    width: 100%;
+    flex:1;
+    padding-bottom: "100";
+}
+.block4{
+    width: 100%;
+    padding-top: 12%;
+    flex:1;
+}
+.summary{
+    display:flex;
+    flex-direction: row;
+}
+.item {
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    flex: 2;
+}
+.co_item{
+    border: 6px solid #d8d7d7;
 }
 .list-1{
     display: inline;
@@ -35,10 +101,40 @@
     content: "/";
 }
 .list{
-    width: 25%;
-    padding-left: 10%;
+    width: 45%;
+    padding-left: 12%;
 }
 .fa{
     position: absolute;
-    margin-left: 96%;
+    margin-left: 92.5%;
+}
+#name,
+#acc {
+    border-radius: 5px;
+    border: 1px solid grey;
+    margin-left: 25%;
+    padding: 1%;
+    width: 40%;
+}
+#cvv {
+    border-radius: 5px;
+    border: 1px solid grey;
+    padding: 1%;
+    width: 17%; 
+}
+#exp{
+    border-radius: 5px;
+    border: 1px solid grey;
+    margin-left: 25%;
+    padding: 1%;
+    width: 20%;
+}
+.button {
+    background-color: #4CAF50;
+    width: 43%;
+    color:white;
+    border: none;
+    margin-left: 25%;
+    padding: 2%;
+    text-align: center;
 }
