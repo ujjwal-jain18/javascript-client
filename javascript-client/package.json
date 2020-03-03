@@ -1,0 +1,55 @@
+{
+  "name": "training",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.4.1",
+    "@testing-library/user-event": "^7.2.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-scripts": "3.4.0",
+    "styled-components": "^5.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "test:c": "react-scripts test --watchAll=false --coverage",
+    "commit": "npx git-cz",
+    "lint": "eslint ./src",
+    "lint:fix": "npm run lint --fix",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.1.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "husky": "^4.2.3"
+  },
+  "hooks": {
+    "pre-commit": "npm run lint && npm run test:c",
+    "pre-push": "npm run lint && npm run test:c"
+  },
+  "config": {
+    "commitizen": {
+      "path": "/home/ujjwal.jain/javascript-client/node_modules/cz-conventional-changelog"
+    }
+  }
+}
