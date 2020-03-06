@@ -1,3 +1,5 @@
 import Demo from './textFieldDemo/index';
 
-export default Demo;
+import InputDemo from './inputDemo/index';
+
+export { Demo, InputDemo };

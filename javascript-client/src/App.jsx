@@ -1,11 +1,11 @@
 import React from 'react';
 
-import Demo from './pages/index';
+import { InputDemo } from './pages/index';
 
 function App() {
   return (
     <>
-      <Demo />
+      <InputDemo />
     </>
   );
 }
