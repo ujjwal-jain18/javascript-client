@@ -1,3 +1,4 @@
 import TextField from './textField/index';
+import Slider from './slider/index';
 
-export default TextField;
+export { TextField, Slider };
