@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-console */
 import React from 'react';
 import * as yup from 'yup';
@@ -10,6 +11,19 @@ import {
 
 
 class InputDemo extends React.Component {
+  schema = yup.object().shape({
+    name: yup.string().required('Name is required').min(3),
+    sport: yup.string().required('sport is required'),
+    cricket: yup.string().when('sport', {
+      is: 'cricket',
+      then: yup.string().required('What you do is required'),
+    }),
+    football: yup.string().when('sport', {
+      is: 'football',
+      then: yup.string().required('What you do is required'),
+    }),
+  });
+
   constructor(props) {
     super(props);
     this.state = {
@@ -17,76 +31,56 @@ class InputDemo extends React.Component {
       sport: '',
       cricket: '',
       football: '',
-      nameError: '',
-      sportError: '',
-      WhatYouDoError: '',
-      error: '',
+      touched: {
+        name: false,
+        sport: false,
+        cricket: false,
+        football: false,
+      },
     };
   }
 
-  geterror = async (key, value) => {
-    console.log('2');
-    const schema = yup.object().shape({
-      Name: yup.string().required('Name is required').min(3),
-      Sport: yup.string().required('sport is required'),
-      Radio: yup.string().required('What you do is required'),
-    });
-    try {
-      await schema.validateAt(key, value);
-      console.log('7');
-      this.setState({ error: '' });
-    } catch (err) {
-      console.log('8');
-      this.setState({ error: err.errors });
-    }
-  }
+    getError = (field) => {
+      if (this.state.touched[field] && this.hasErrors()) {
+        try {
+          this.schema.validateSyncAt(field, this.state);
+        } catch (err) {
+          return err.message;
+        }
+      }
+    };
 
-  isTouched = (key, value) => (this.geterror(key, value));
+  isTouched = (field) => {
+    const { touched } = this.state;
+    this.setState({
+      touched: {
+        ...touched,
+        [field]: true,
+      },
+    });
+  }
 
   hasErrors = () => {
-    let error;
-    const { nameError, sportError, WhatYouDoError } = this.state;
-    if (nameError === '' || sportError === '' || WhatYouDoError === '') {
-      error = false;
-    } else {
-      error = true;
+    try {
+      this.schema.validateSync(this.state);
+    } catch (err) {
+      return true;
     }
-    return error;
+    return false;
   }
 
-    isTouchedName = () => {
-      console.log('1');
-      const { name, error } = this.state;
-      this.isTouched('Name', name);
-      console.log('6');
-      this.setState({ nameError: error });
-    }
-
-    isTouchedSport = () => {
-      const { error, sport } = this.state;
-      this.isTouched('Sport', sport);
-      this.setState({ sportError: error });
-    }
-
-    isTouchedPosition = () => {
-      const {
-        cricket, football,
-      } = this.state;
-      if (cricket === '' && football === '') {
-        this.setState({ WatchError: 'What You Do is required' });
-      } else {
-        this.setState({ WatchError: '' });
-      }
-    }
 
     handleNameChange = (e) => {
       this.setState({ name: e.target.value },
-        () => console.log(this.state), this.isTouchedName());
+        () => console.log(this.state));
     }
 
     handleSportChange = (e) => {
       this.setState({ sport: e.target.value },
-        () => console.log(this.state), this.isTouchedSport());
+        () => console.log(this.state));
+      if (e.target.value === 'Select') {
+        this.setState({ sport: '' });
+      }
       if (e.target.value === 'cricket') {
         this.setState({ football: '' });
       } else if (e.target.value === 'football') {
@@ -103,11 +97,11 @@ class InputDemo extends React.Component {
       if (sport === 'cricket') {
         this.isTouched('Radio', cricket, WhatYouDoError);
         this.setState({ cricket: e.target.value },
-          () => console.log(this.state), this.isTouchedPosition());
+          () => console.log(this.state));
       } else if (sport === 'football') {
         this.isTouched('Radio', football, WhatYouDoError);
         this.setState({ football: e.target.value },
-          () => console.log(this.state), this.isTouchedPosition());
+          () => console.log(this.state));
       }
     }
 
@@ -124,23 +118,23 @@ class InputDemo extends React.Component {
 
     render() {
       const {
-        sport, nameError, sportError, WhatYouDoError,
+        sport,
       } = this.state;
-      const dis = this.hasErrors();
+      console.log(this.state);
       return (
         <>
           <TextField
             input="Name"
-            error={nameError}
+            error={this.getError('name')}
             onChange={this.handleNameChange}
-            onBlur={this.isTouchedName}
+            onBlur={() => this.isTouched('name')}
           />
           <SelectField
             input="Select the game you play ?"
-            error={sportError}
+            error={this.getError('sport')}
             onChange={this.handleSportChange}
             options={selectOptions}
-            onBlur={this.isTouchedSport}
+            onBlur={() => this.isTouched('sport')}
           />
           <div>
             {
@@ -148,15 +142,21 @@ class InputDemo extends React.Component {
                 : (
                   <RadioGroup
                     input="What you do ?"
-                    error={WhatYouDoError}
+                    error={this.getError(sport)}
                     options={this.RadioOption()}
                     onChange={this.handlePositionChange}
-                    onBlur={this.isTouchedPosition}
+                    onBlur={() => this.isTouched(sport)}
                   />
                 )
             }
           </div>
-          <ButtonField disabled={dis} />
+          <ButtonField
+            value="cancel"
+          />
+          <ButtonField
+            value="submit"
+            disabled={this.hasErrors()}
+          />
         </>
       );
     }
