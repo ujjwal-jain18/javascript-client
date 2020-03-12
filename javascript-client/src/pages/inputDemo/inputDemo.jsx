@@ -40,6 +40,7 @@ class InputDemo extends React.Component {
     };
   }
 
+    // eslint-disable-next-line consistent-return
     getError = (field) => {
       if (this.state.touched[field] && this.hasErrors()) {
         try {
