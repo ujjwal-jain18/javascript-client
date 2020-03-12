@@ -41,3 +41,5 @@ export const RadioOptionsFootball = [
     value: 'defender',
   },
 ];
+
+export const Operators = ['+', '-', '/', '*'];

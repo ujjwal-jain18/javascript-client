@@ -1,11 +1,15 @@
 import React from 'react';
+import { ThemeProvider } from 'styled-components';
+import { theme } from './theme';
 
-import { InputDemo } from './pages/index';
+import { ChildrenDemo } from './pages/index';
 
 function App() {
   return (
     <>
-      <InputDemo />
+      <ThemeProvider theme={theme}>
+        <ChildrenDemo />
+      </ThemeProvider>
     </>
   );
 }
