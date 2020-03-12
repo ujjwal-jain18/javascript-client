@@ -3,5 +3,21 @@ import styled from 'styled-components';
 const Input = styled.input`
 
 display:inline;
+&.error{
+    border: 1px solid red;
+    text-color:red;
+}
+&.noerror{
+    display:none;
+}
+ 
 `;
-export default Input;
+const Div1 = styled.div`
+&.error{
+    color:red;
+}
+&.noerror{
+    display:none;
+}
+`;
+export { Input, Div1 };
