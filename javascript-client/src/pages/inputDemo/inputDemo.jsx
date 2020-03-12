@@ -93,14 +93,12 @@ class InputDemo extends React.Component {
 
     handlePositionChange = (e) => {
       const {
-        sport, cricket, football, WhatYouDoError,
+        sport,
       } = this.state;
       if (sport === 'cricket') {
-        this.isTouched('Radio', cricket, WhatYouDoError);
         this.setState({ cricket: e.target.value },
           () => console.log(this.state));
       } else if (sport === 'football') {
-        this.isTouched('Radio', football, WhatYouDoError);
         this.setState({ football: e.target.value },
           () => console.log(this.state));
       }
