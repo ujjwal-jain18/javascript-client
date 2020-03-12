@@ -20,13 +20,23 @@ export class ChildrenDemo extends React.Component {
     render() {
       return (
         <>
-          <Math first="3" second="4" operator="^" children={this.children} />
-          <Math first="3" second="4" operator="+" children={this.children} />
-          <Math first="3" second="4" operator="-" children={this.children} />
+          <Math first="3" second="4" operator="^">
+            {this.children}
+          </Math>
+          <Math first="3" second="4" operator="+">
+            {this.children}
+          </Math>
+          <Math first="3" second="4" operator="-">
+            {this.children}
+          </Math>
           <Math first="3" second="4" operator="*" />
-          <Math first="3" second="4" operator="?" children={this.children} />
+          <Math first="3" second="4" operator="?">
+            {this.children}
+          </Math>
           <Math first="3" second="0" operator="/" />
-          <Math first="3" second="4" operator="/" children={this.children} />
+          <Math first="3" second="4" operator="/">
+            {this.children}
+          </Math>
         </>
       );
     }
