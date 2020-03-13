@@ -1,11 +1,18 @@
 import React from 'react';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
+import { theme } from './theme';
 
-import { InputDemo } from './pages/index';
+import { ChildrenDemo } from './pages/index';
 
 function App() {
   return (
     <>
-      <InputDemo />
+      <ThemeProvider theme={theme}>
+        <Typography>
+          <ChildrenDemo />
+        </Typography>
+      </ThemeProvider>
     </>
   );
 }
