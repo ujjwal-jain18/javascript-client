@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
 import AddDialog from './Component/index';
+import NavBar from '../component/index';
 
 
 class Trainee extends React.Component {
@@ -35,9 +36,12 @@ class Trainee extends React.Component {
       open,
     } = this.state;
     return (
-      <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+      <>
+        <NavBar />
+        <br />
+        <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
           ADD TRAINEE
-        { open
+          { open
         && (
           <AddDialog
             open={open}
@@ -45,7 +49,8 @@ class Trainee extends React.Component {
             onSubmit={() => this.onSubmit}
           />
         ) }
-      </Button>
+        </Button>
+      </>
     );
   }
 }

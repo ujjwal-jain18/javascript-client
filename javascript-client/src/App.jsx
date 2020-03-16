@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Trainee } from './pages/index';
+import { Login } from './pages/index';
 
 
 function App() {
   return (
     <>
-      <Trainee />
+      <Login />
     </>
   );
 }
