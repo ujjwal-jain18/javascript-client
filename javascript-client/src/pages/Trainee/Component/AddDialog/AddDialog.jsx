@@ -24,6 +24,9 @@ const styling = () => ({
     display: 'flex',
     flexDirection: 'row',
   },
+  Demo: {
+    flex: '1',
+  },
 });
 class AddDialog extends React.Component {
   schema = yup.object().shape({
@@ -113,6 +116,7 @@ class AddDialog extends React.Component {
     const {
       name, email, password, error,
     } = this.state;
+    console.log('add', open);
     return (
       <div>
         <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
@@ -165,46 +169,52 @@ class AddDialog extends React.Component {
             <br />
             <br />
             <div className={classes.PasswordText}>
-              <TextField
-                id="password"
-                error={!!error.password}
-                label="password"
-                type="password"
-                variant="outlined"
-                className={classes.text}
-                onChange={this.handleChange('password')}
-                helperText={this.getError('password')}
-                onBlur={() => this.isTouched('password')}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <VisibilityOffIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
-                id="confirm-password"
-                error={!!error.confirmPassword}
-                label="Confirm-password"
-                type="password"
-                variant="outlined"
-                className={classes.text}
-                onBlur={() => this.isTouched('confirmPassword')}
-                helperText={this.getError('confirmPassword')}
-                onChange={this.handleChange('confirmPassword')}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <VisibilityOffIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
+              <div className={classes.Demo}>
+                <TextField
+                  id="password"
+                  error={!!error.password}
+                  label="password"
+                  type="password"
+                  variant="outlined"
+                  className={classes.text}
+                  onChange={this.handleChange('password')}
+                  helperText={this.getError('password')}
+                  onBlur={() => this.isTouched('password')}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <VisibilityOffIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </div>
+              &nbsp;
+              &nbsp;
+              <div className={classes.Demo}>
+                <TextField
+                  id="confirm-password"
+                  error={!!error.confirmPassword}
+                  label="Confirm-password"
+                  type="password"
+                  variant="outlined"
+                  className={classes.text}
+                  onBlur={() => this.isTouched('confirmPassword')}
+                  helperText={this.getError('confirmPassword')}
+                  onChange={this.handleChange('confirmPassword')}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <VisibilityOffIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </div>
             </div>
           </DialogContent>
           <DialogActions>
-            <Button onClick={(e) => onClose(e)} color="primary">
+            <Button onClick={onClose} color="primary">
               Cancel
             </Button>
             <Button
