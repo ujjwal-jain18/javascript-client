@@ -3,19 +3,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  TextField, Dialog, DialogActions, InputAdornment, Fab,
+  TextField, Dialog, DialogActions, InputAdornment, Avatar,
   DialogContent, DialogTitle, Button,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import * as yup from 'yup';
 import EmailIcon from '@material-ui/icons/Email';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import LockIcon from '@material-ui/icons/Lock';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
-const styling = () => ({
+const styling = (theme) => ({
   Content: {
     display: 'flex',
     flexDirection: 'column',
+  },
+  Text: {
+    whiteSpace: 'pre-line',
+  },
+  Icon: {
+    backgroundColor: theme.palette.secondary.main,
+    marginLeft: theme.spacing(16),
   },
 
 });
@@ -23,7 +30,7 @@ class Login extends React.Component {
   schema = yup.object().shape({
     email: yup.string().email().required('Email is required'),
     password: yup.string().required('password is required').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]{8,}$/,
-      'must contain 8 characters at least one uppercase one lowercase and one number'),
+      'must contain 8 characters at least one \n uppercase one lowercase and one number'),
   });
 
   constructor(props) {
@@ -99,9 +106,9 @@ class Login extends React.Component {
     return (
       <div className={classes.Content}>
         <Dialog open aria-labelledby="form-dialog-title">
-          <Fab color="secondary" align="center">
-            <LockIcon />
-          </Fab>
+          <Avatar className={classes.Icon}>
+            <LockOutlinedIcon />
+          </Avatar>
           <DialogTitle id="form-dialog-title" align="center">Login</DialogTitle>
           <DialogContent>
             <TextField
@@ -110,7 +117,6 @@ class Login extends React.Component {
               label="EmailAddress"
               type="email"
               variant="outlined"
-              className={classes.text}
               onChange={this.handleChange('email')}
               helperText={this.getError('email')}
               onBlur={() => this.isTouched('email')}
@@ -131,7 +137,7 @@ class Login extends React.Component {
               label="password"
               type="password"
               variant="outlined"
-              className={classes.text}
+              className={classes.Text}
               onChange={this.handleChange('password')}
               helperText={this.getError('password')}
               onBlur={() => this.isTouched('password')}
