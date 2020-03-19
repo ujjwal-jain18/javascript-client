@@ -4,9 +4,10 @@ import {
   Switch, BrowserRouter as Router,
 } from 'react-router-dom';
 import {
-  Demo, InputDemo, ChildrenDemo, Trainee, Login, NotFound,
+  Demo, InputDemo, ChildrenDemo, TraineeList, Login, NotFound, Trainee,
 } from './pages/index';
 import { AuthRoute, PrivateRoute } from './routes/index';
+import TraineeDetail from './pages/Trainee/TraineeDetail';
 
 
 class App extends React.Component {
@@ -14,11 +15,13 @@ class App extends React.Component {
     return (
       <Router>
         <Switch>
-          <AuthRoute path="/login" component={Login} />
-          <PrivateRoute path="/input-demo" component={InputDemo} />
-          <PrivateRoute path="/textfield-demo" component={Demo} />
-          <PrivateRoute path="/children-demo" component={ChildrenDemo} />
+          <AuthRoute exact path="/login" component={Login} />
+          <PrivateRoute exact path="/input-demo" component={InputDemo} />
+          <PrivateRoute exact path="/textfield-demo" component={Demo} />
+          <PrivateRoute exact path="/children-demo" component={ChildrenDemo} />
           <PrivateRoute exact path="/" component={Trainee} />
+          <PrivateRoute exact path="/trainee" component={TraineeList} />
+          <PrivateRoute exact path="/trainee/:traineeId" component={TraineeDetail} />
           <PrivateRoute component={NotFound} />
         </Switch>
       </Router>

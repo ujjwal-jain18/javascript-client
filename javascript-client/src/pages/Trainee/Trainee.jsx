@@ -17,9 +17,7 @@ class Trainee extends React.Component {
   }
 
   handleClose = () => {
-    const { open } = this.state;
     this.setState({ open: false });
-    return open;
   }
 
   onSubmit = (data) => {
@@ -37,15 +35,12 @@ class Trainee extends React.Component {
     return (
       <>
         <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          ADD TRAINEE
-          { open
-        && (
+          ADD TRAINEELIST
           <AddDialog
             open={open}
             onClose={this.handleClose}
             onSubmit={() => this.onSubmit}
           />
-        ) }
         </Button>
       </>
     );
