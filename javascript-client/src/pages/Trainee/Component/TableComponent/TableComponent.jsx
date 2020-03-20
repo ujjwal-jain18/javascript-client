@@ -25,7 +25,7 @@ function TableComponent(props) {
   } = props;
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} elevation={3}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
