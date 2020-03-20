@@ -1,13 +1,12 @@
 /* eslint-disable react/prefer-stateless-function */
 import React from 'react';
 import {
-  Switch, BrowserRouter as Router, Route, Redirect
+  Switch, BrowserRouter as Router, Route, Redirect,
 } from 'react-router-dom';
 import {
-  Demo, InputDemo, ChildrenDemo, TraineeList, Login, NotFound,
+  Demo, InputDemo, ChildrenDemo, Trainee, Login, NotFound,
 } from './pages/index';
 import { AuthRoute, PrivateRoute } from './routes/index';
-import TraineeDetail from './pages/Trainee/TraineeDetail';
 
 
 class App extends React.Component {
@@ -22,8 +21,7 @@ class App extends React.Component {
           <PrivateRoute exact path="/input-demo" component={InputDemo} />
           <PrivateRoute exact path="/textfield-demo" component={Demo} />
           <PrivateRoute exact path="/children-demo" component={ChildrenDemo} />
-          <PrivateRoute exact path="/trainee" component={TraineeList} />
-          <PrivateRoute exact path="/trainee/:traineeId" component={TraineeDetail} />
+          <PrivateRoute path="/trainee" component={Trainee} />
           <PrivateRoute component={NotFound} />
         </Switch>
       </Router>
