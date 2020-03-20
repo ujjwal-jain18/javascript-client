@@ -1,3 +1,4 @@
 import AddDialog from './AddDialog/index';
+import TableComponent from './TableComponent/index';
 
-export default AddDialog;
+export { AddDialog, TableComponent };
