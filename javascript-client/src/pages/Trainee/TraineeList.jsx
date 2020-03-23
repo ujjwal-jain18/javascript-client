@@ -2,13 +2,19 @@
 /* eslint-disable react/forbid-prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 import {
   Link, BrowserRouter as Router,
 } from 'react-router-dom';
 import { Button } from '@material-ui/core';
-import AddDialog from './Component/index';
+import { AddDialog, TableComponent } from './Component/index';
 import trainees from './data/trainee';
 
+const styles = (theme) => ({
+  root: {
+    marginLeft: theme.spacing(140),
+  },
+});
 class TraineeList extends React.Component {
   constructor(props) {
     super(props);
@@ -37,10 +43,15 @@ class TraineeList extends React.Component {
     const {
       open,
     } = this.state;
-    const { match: { url } } = this.props;
+    const { match: { url }, classes } = this.props;
     return (
       <>
-        <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+        <Button
+          className={classes.root}
+          variant="outlined"
+          color="primary"
+          onClick={this.handleClickOpen}
+        >
           ADD TRAINEELIST
           <AddDialog
             open={open}
@@ -48,6 +59,21 @@ class TraineeList extends React.Component {
             onSubmit={() => this.onSubmit}
           />
         </Button>
+        &nbsp;
+        <TableComponent
+          data={trainees}
+          column={[
+            {
+              field: 'name',
+              label: 'Name',
+              align: 'center',
+            },
+            {
+              field: 'email',
+              label: 'Email-Address',
+            },
+          ]}
+        />
         <Router>
           <ul>
             {trainees.map(({ name, id }) => (
@@ -65,5 +91,6 @@ class TraineeList extends React.Component {
 }
 TraineeList.propTypes = {
   match: PropTypes.object.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
-export default TraineeList;
+export default withStyles(styles)(TraineeList);
