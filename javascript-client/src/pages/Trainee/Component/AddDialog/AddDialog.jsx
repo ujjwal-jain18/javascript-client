@@ -116,7 +116,6 @@ class AddDialog extends React.Component {
     const {
       name, email, password, error,
     } = this.state;
-    console.log('add', open);
     return (
       <div>
         <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
