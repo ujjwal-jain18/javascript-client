@@ -1,54 +1,20 @@
-/* eslint-disable no-console */
+/* eslint-disable react/forbid-prop-types */
 import React from 'react';
-import { Button } from '@material-ui/core';
-import AddDialog from './Component/index';
+import PropType from 'prop-types';
+import { Route, Switch } from 'react-router-dom';
+import TraineeList from './TraineeList';
+import TraineeDetail from './TraineeDetail';
 
-
-class Trainee extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false,
-    };
-  }
-
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  }
-
-  handleClose = () => {
-    const { open } = this.state;
-    this.setState({ open: false });
-    return open;
-  }
-
-  onSubmit = (data) => {
-    this.setState({
-      open: false,
-    }, () => {
-      console.log(data);
-    });
-  }
-
-  render() {
-    const {
-      open,
-    } = this.state;
-    return (
-      <>
-        <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          ADD TRAINEE
-          { open
-        && (
-          <AddDialog
-            open={open}
-            onClose={this.handleClose}
-            onSubmit={() => this.onSubmit}
-          />
-        ) }
-        </Button>
-      </>
-    );
-  }
+function Trainee(props) {
+  const { match: { path } } = props;
+  return (
+    <Switch>
+      <Route exact path={path} component={TraineeList} />
+      <Route exact path={`${path}/:traineeId`} component={TraineeDetail} />
+    </Switch>
+  );
 }
+Trainee.propTypes = {
+  match: PropType.object.isRequired,
+};
 export default Trainee;

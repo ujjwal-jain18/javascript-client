@@ -1,7 +1,7 @@
 /* eslint-disable react/prefer-stateless-function */
 import React from 'react';
 import {
-  Switch, BrowserRouter as Router,
+  Switch, BrowserRouter as Router, Route, Redirect,
 } from 'react-router-dom';
 import {
   Demo, InputDemo, ChildrenDemo, Trainee, Login, NotFound,
@@ -14,11 +14,14 @@ class App extends React.Component {
     return (
       <Router>
         <Switch>
-          <AuthRoute path="/login" component={Login} />
-          <PrivateRoute path="/input-demo" component={InputDemo} />
-          <PrivateRoute path="/textfield-demo" component={Demo} />
-          <PrivateRoute path="/children-demo" component={ChildrenDemo} />
-          <PrivateRoute exact path="/" component={Trainee} />
+          <Route exact path="/">
+            <Redirect to="/trainee" />
+          </Route>
+          <AuthRoute exact path="/login" component={Login} />
+          <PrivateRoute exact path="/input-demo" component={InputDemo} />
+          <PrivateRoute exact path="/textfield-demo" component={Demo} />
+          <PrivateRoute exact path="/children-demo" component={ChildrenDemo} />
+          <PrivateRoute path="/trainee" component={Trainee} />
           <PrivateRoute component={NotFound} />
         </Switch>
       </Router>
