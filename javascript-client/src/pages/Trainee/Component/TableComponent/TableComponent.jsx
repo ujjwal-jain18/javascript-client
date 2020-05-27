@@ -1,22 +1,22 @@
 /* eslint-disable react/no-array-index-key */
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCel"';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 
 const useStyles = (theme) => ({
   table: {
     minWidth: 650,
   },
   header: {
-    color: "grey",
+    color: 'grey',
   },
   cover: {
     '&:nth-of-type(odd)': {
@@ -30,7 +30,7 @@ function TableComponent(props) {
 
   return (
     <TableContainer component={Paper} elevation={3}>
-      <Table className={classes.table} aria-label="simple table">
+      <Table className={classes.table} aria-label='simple table'>
         <TableHead>
           <TableRow >
             {column.map((col) => (
@@ -41,7 +41,7 @@ function TableComponent(props) {
               >
                 <TableSortLabel
                   active={orderBy === col.label}
-                  direction={orderBy === col.label ? order : "asc"}
+                  direction={orderBy === col.label ? order : 'asc'}
                   onClick={onSort(col.label)}
                 >
                   {col.label}
@@ -76,8 +76,8 @@ TableComponent.propTypes = {
   onSort: PropTypes.func,
 };
 TableComponent.defaultProps = {
-  orderBy: "",
-  order: "asc",
+  orderBy: '',
+  order: 'asc',
   onSort: () => {},
 };
 export default withStyles(useStyles)(TableComponent);

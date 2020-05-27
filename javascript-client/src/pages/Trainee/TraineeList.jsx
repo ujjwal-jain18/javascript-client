@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 /* eslint-disable react/forbid-prop-types */
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 // import {
 //   Link, BrowserRouter as Router,
 // } from 'react-router-dom';
-import { Button } from "@material-ui/core";
-import { AddDialog, TableComponent } from "./Component/index";
-import { trainees } from "./data/trainee";
+import { Button } from '@material-ui/core';
+import { AddDialog, TableComponent } from './Component/index';
+import { trainees } from './data/trainee';
 
 const styles = (theme) => ({
   root: {
@@ -20,8 +20,8 @@ class TraineeList extends React.Component {
     super(props);
     this.state = {
       open: false,
-      orderBy: "",
-      order: "asc",
+      orderBy: '',
+      order: 'asc',
       data: null,
     };
   }
@@ -38,7 +38,7 @@ class TraineeList extends React.Component {
     const { order } = this.state;
     this.setState({
       orderBy: field,
-      order: order === "asc" ? "desc" : "asc",
+      order: order === 'asc' ? 'desc' : 'asc',
     });
   };
 
@@ -69,8 +69,8 @@ class TraineeList extends React.Component {
       <>
         <Button
           className={classes.root}
-          variant="outlined"
-          color="primary"
+          variant='outlined'
+          color='primary'
           onClick={this.handleClickOpen}
         >
           ADD TRAINEELIST
@@ -85,18 +85,18 @@ class TraineeList extends React.Component {
           data={trainees}
           column={[
             {
-              field: "name",
-              label: "Name",
+              field: 'name',
+              label: 'Name',
             },
             {
-              field: "email",
-              label: "Email-Address",
+              field: 'email',
+              label: 'Email-Address',
               format: (value) => value && value.toUpperCase(),
             },
             {
-              field: "createdAt",
-              label: "Date",
-              align: "right",
+              field: 'createdAt',
+              label: 'Date',
+              align: 'right',
             },
           ]}
           onSort={this.handleSort}
