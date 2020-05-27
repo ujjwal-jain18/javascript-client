@@ -36,4 +36,4 @@ const trainees = [
 ];
 
 
-export default trainees;
+export { trainees, getDateFormatted } ;
