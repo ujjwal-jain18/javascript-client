@@ -3,13 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  TextField,
-  Box,
-  InputAdornment,
-  Avatar,
-  Button,
-  Typography,
-  Container,
+  TextField, Dialog, DialogActions, InputAdornment, Avatar,
+  DialogContent, DialogTitle, Button,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import * as yup from 'yup';
@@ -18,24 +13,17 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 const styling = (theme) => ({
-  container: {
+  Content: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    flex: 1,
   },
-  avatar: {
-    margin: theme.spacing(1),
+  root: {
+    marginLeft: theme.spacing(16),
     backgroundColor: theme.palette.secondary.main,
   },
-  form: {
-    width: '100%',
-    marginTop: theme.spacing(1),
-  },
-  box: {
-    marginTop: theme.spacing(16),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
+  Demo: {
+    flex: 1,
   },
 });
 class Login extends React.Component {
@@ -124,41 +112,40 @@ class Login extends React.Component {
     const { classes } = this.props;
     const { error } = this.state;
     return (
-      <Container component="main" maxWidth="xs">
-        <Box mx="auto" p={2} className={classes.box} boxShadow={3}>
-          <div className={classes.container}>
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h4">
-              Login
-            </Typography>
-            <form className={classes.form} noValidate>
+      <div className={classes.Content}>
+        <Dialog open aria-labelledby="form-dialog-title">
+          <Avatar className={classes.root}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <DialogTitle id="form-dialog-title" align="center">Login</DialogTitle>
+          <DialogContent>
+            <TextField
+              id="email"
+              error={!!error.email}
+              label="EmailAddress"
+              type="email"
+              variant="outlined"
+              onChange={this.handleChange('email')}
+              helperText={this.getError('email')}
+              onBlur={() => this.isTouched('email')}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <EmailIcon />
+                  </InputAdornment>
+                ),
+              }}
+              fullWidth
+            />
+            <br />
+            <br />
+            <div className={classes.Demo}>
               <TextField
-                label="Email Address"
-                id="email"
-                margin="normal"
-                error={!!error.email}
-                fullWidth
-                onChange={this.handleChange('email')}
-                helperText={this.getError('email')}
-                onBlur={() => this.isTouched('email')}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <EmailIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                variant="outlined"
-              />
-              <TextField
-                label="Password"
                 id="password"
-                margin="normal"
-                type="password"
                 error={!!error.password}
-                fullWidth
+                label="password"
+                type="password"
+                variant="outlined"
                 onChange={this.handleChange('password')}
                 helperText={this.getError('password')}
                 onBlur={() => this.isTouched('password')}
@@ -169,22 +156,23 @@ class Login extends React.Component {
                     </InputAdornment>
                   ),
                 }}
-                variant="outlined"
-              />
-              <Button
-                type="submit"
+
                 fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                disabled={this.hasErrors()}
-              >
-                Sign In
-              </Button>
-            </form>
-          </div>
-        </Box>
-      </Container>
+              />
+            </div>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              color="primary"
+              variant="contained"
+              disabled={this.hasErrors()}
+              fullWidth
+            >
+              SIGNIN
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     );
   }
 }
