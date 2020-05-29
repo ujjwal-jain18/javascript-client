@@ -38,10 +38,6 @@ class EditDialog extends React.Component {
     this.state = {
       name: '',
       email: '',
-      touched: {
-        name: false,
-        email: false,
-      },
       error: {
         name: '',
         email: '',
@@ -65,8 +61,7 @@ class EditDialog extends React.Component {
 
   // eslint-disable-next-line consistent-return
   getError = (field) => {
-    const { touched, error } = this.state;
-    if (touched[field]) {
+    const { error } = this.state;
       this.schema
         .validateAt(field, this.state)
         .then(() => {
@@ -89,18 +84,7 @@ class EditDialog extends React.Component {
             });
           }
         });
-    }
     return error[field];
-  };
-
-  isTouched = (field) => {
-    const { touched } = this.state;
-    this.setState({
-      touched: {
-        ...touched,
-        [field]: true,
-      },
-    });
   };
 
   hasErrors = () => {
@@ -138,7 +122,6 @@ class EditDialog extends React.Component {
                   margin='dense'
                   defaultValue={data.name}
                   helperText={this.getError('name')}
-                  onBlur={() => this.isTouched('name')}
                   onChange={this.handleOnChange('name')}
                   fullWidth
                   InputProps={{
@@ -162,7 +145,6 @@ class EditDialog extends React.Component {
                   margin='dense'
                   defaultValue={data.email}
                   helperText={this.getError('email')}
-                  onBlur={() => this.isTouched('email')}
                   onChange={this.handleOnChange('email')}
                   InputProps={{
                     startAdornment: (
