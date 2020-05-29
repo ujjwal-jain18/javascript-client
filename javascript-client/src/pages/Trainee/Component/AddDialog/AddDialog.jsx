@@ -118,8 +118,8 @@ class AddDialog extends React.Component {
     } = this.state;
     return (
       <div>
-        <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Add Trainee</DialogTitle>
+        <Dialog open={open} onClose={onClose} aria-labelledby='form-dialog-title'>
+          <DialogTitle id='form-dialog-title'>Add Trainee</DialogTitle>
           <DialogContent>
             <DialogContentText className={classes.Content}>
               Enter your trainee details
@@ -127,10 +127,10 @@ class AddDialog extends React.Component {
             <TextField
               autoFocus
               error={!!error.name}
-              id="name"
-              label="Name*"
-              type="name"
-              variant="outlined"
+              id='name'
+              label='Name*'
+              type='name'
+              variant='outlined'
               className={classes.text}
               helperText={this.getError('name')}
               onChange={this.handleChange('name')}
@@ -138,7 +138,7 @@ class AddDialog extends React.Component {
               fullWidth
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">
+                  <InputAdornment position='start'>
                     <PersonIcon />
                   </InputAdornment>
                 ),
@@ -147,18 +147,18 @@ class AddDialog extends React.Component {
             <br />
             <br />
             <TextField
-              id="email"
+              id='email'
               error={!!error.email}
-              label="EmailAddress"
-              type="email"
-              variant="outlined"
+              label='EmailAddress'
+              type='email'
+              variant='outlined'
               className={classes.text}
               onChange={this.handleChange('email')}
               helperText={this.getError('email')}
               onBlur={() => this.isTouched('email')}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">
+                  <InputAdornment position='start'>
                     <EmailIcon />
                   </InputAdornment>
                 ),
@@ -170,18 +170,18 @@ class AddDialog extends React.Component {
             <div className={classes.PasswordText}>
               <div className={classes.Demo}>
                 <TextField
-                  id="password"
+                  id='password'
                   error={!!error.password}
-                  label="password"
-                  type="password"
-                  variant="outlined"
+                  label='password'
+                  type='password'
+                  variant='outlined'
                   className={classes.text}
                   onChange={this.handleChange('password')}
                   helperText={this.getError('password')}
                   onBlur={() => this.isTouched('password')}
                   InputProps={{
                     startAdornment: (
-                      <InputAdornment position="start">
+                      <InputAdornment position='start'>
                         <VisibilityOffIcon />
                       </InputAdornment>
                     ),
@@ -192,18 +192,18 @@ class AddDialog extends React.Component {
               &nbsp;
               <div className={classes.Demo}>
                 <TextField
-                  id="confirm-password"
+                  id='confirm-password'
                   error={!!error.confirmPassword}
-                  label="Confirm-password"
-                  type="password"
-                  variant="outlined"
+                  label='Confirm-password'
+                  type='password'
+                  variant='outlined'
                   className={classes.text}
                   onBlur={() => this.isTouched('confirmPassword')}
                   helperText={this.getError('confirmPassword')}
                   onChange={this.handleChange('confirmPassword')}
                   InputProps={{
                     startAdornment: (
-                      <InputAdornment position="start">
+                      <InputAdornment position='start'>
                         <VisibilityOffIcon />
                       </InputAdornment>
                     ),
@@ -213,14 +213,14 @@ class AddDialog extends React.Component {
             </div>
           </DialogContent>
           <DialogActions>
-            <Button onClick={onClose} color="primary">
+            <Button onClick={onClose} color='primary'>
               Cancel
             </Button>
             <Button
               onClick={() => onSubmit()({
                 name, email, password,
               })}
-              color="primary"
+              color='primary'
               disabled={this.hasErrors()}
             >
               Submit
