@@ -3,6 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { snackbarContext } from './../../../../contexts/snackbarProvider';
 import * as yup from 'yup';
 import {
   TextField,
@@ -62,28 +63,28 @@ class EditDialog extends React.Component {
   // eslint-disable-next-line consistent-return
   getError = (field) => {
     const { error } = this.state;
-      this.schema
-        .validateAt(field, this.state)
-        .then(() => {
-          if (error[field] !== '') {
-            this.setState({
-              error: {
-                ...error,
-                [field]: '',
-              },
-            });
-          }
-        })
-        .catch((err) => {
-          if (err.message !== error[field]) {
-            this.setState({
-              error: {
-                ...error,
-                [field]: err.message,
-              },
-            });
-          }
-        });
+    this.schema
+      .validateAt(field, this.state)
+      .then(() => {
+        if (error[field] !== '') {
+          this.setState({
+            error: {
+              ...error,
+              [field]: '',
+            },
+          });
+        }
+      })
+      .catch((err) => {
+        if (err.message !== error[field]) {
+          this.setState({
+            error: {
+              ...error,
+              [field]: err.message,
+            },
+          });
+        }
+      });
     return error[field];
   };
 
@@ -164,22 +165,36 @@ class EditDialog extends React.Component {
             <Button onClick={handleEditClose} color='primary'>
               Cancel
             </Button>
-            <Button
-              onClick={() => handleEdit(name, email)}
-              className={
-                (name === data.name && email === data.email) || this.hasErrors()
-                  ? classes.button_error
-                  : classes.button_color
-              }
-              color='primry'
-              disabled={
-                (name === data.name && email === data.email) || this.hasErrors()
-                  ? true
-                  : false
-              }
-            >
-              Submit
-            </Button>
+            <snackbarContext.Consumer>
+              {(value) => (
+                <Button
+                  onClick={() =>
+                    handleEdit()(
+                      {
+                        name,
+                        email,
+                      },
+                      value
+                    )
+                  }
+                  className={
+                    (name === data.name && email === data.email) ||
+                    this.hasErrors()
+                      ? classes.button_error
+                      : classes.button_color
+                  }
+                  color='primry'
+                  disabled={
+                    (name === data.name && email === data.email) ||
+                    this.hasErrors()
+                      ? true
+                      : false
+                  }
+                >
+                  Submit
+                </Button>
+              )}
+            </snackbarContext.Consumer>
           </DialogActions>
         </Dialog>
       </div>

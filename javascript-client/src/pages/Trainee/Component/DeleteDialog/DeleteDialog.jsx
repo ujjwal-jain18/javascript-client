@@ -3,6 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { snackbarContext } from './../../../../contexts/snackbarProvider';
 import {
   Dialog,
   DialogActions,
@@ -14,9 +15,9 @@ import {
 
 const useStyles = () => ({
   button_color: {
-        backgroundColor: 'blue',
-        color: 'white'
-  }
+    backgroundColor: 'blue',
+    color: 'white',
+  },
 });
 
 function DeleteDialog(props) {
@@ -36,12 +37,23 @@ function DeleteDialog(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} color='primary' >
+          <Button onClick={onClose} color='primary'>
             Cancel
           </Button>
-          <Button onClick={remove} color='primary' autoFocus className={classes.button_color}>
-            Delete
-          </Button>
+          <snackbarContext.Consumer>
+            {(value) => (
+              <Button
+                onClick={() => {
+                  remove(value);
+                }}
+                color='primary'
+                autoFocus
+                className={classes.button_color}
+              >
+                Delete
+              </Button>
+            )}
+          </snackbarContext.Consumer>
         </DialogActions>
       </Dialog>
     </div>

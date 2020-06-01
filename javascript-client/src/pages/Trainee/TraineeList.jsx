@@ -5,17 +5,16 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import {
-  Link, BrowserRouter as Router,
-} from 'react-router-dom';
+import { Link, BrowserRouter as Router } from 'react-router-dom';
 import { Button } from '@material-ui/core';
+import * as moment from 'moment';
 import {
   AddDialog,
   TableComponent,
   EditDialog,
   DeleteDialog,
 } from './Component/index';
-import { trainees } from './data/trainee';
+import { trainees, getDateFormatted } from './data/trainee';
 
 const styles = (theme) => ({
   root: {
@@ -38,6 +37,15 @@ class TraineeList extends React.Component {
       rowsPerPage: 10,
     };
   }
+
+  handlesnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    this.setState({
+      snackbarOpen: false,
+    });
+  };
 
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -87,11 +95,19 @@ class TraineeList extends React.Component {
     });
   };
 
-  handleRemove = () => {
+  handleRemove = (value) => {
+    const Date_compare = '2019-02-12T18:15:11.778Z';
     const { deleteData } = this.state;
+    const { createdAt } = deleteData;
+    const isAfter = moment(createdAt).isAfter(Date_compare);
     this.setState({
       RemoveOpen: false,
     });
+    const message = isAfter
+      ? 'This is Error Message'
+      : 'This is Success Message';
+    const status = isAfter ? 'error' : 'success';
+    value(message, status);
     console.log('DELETE ITEM');
     console.log(deleteData);
   };
@@ -109,15 +125,22 @@ class TraineeList extends React.Component {
     });
   };
 
-  handleEdit = (name, email) => {
-    this.setState({
-      EditOpen: false,
-    });
-    console.log('Edit Data');
-    console.log({name, email});
+  handleEdit = (data, value) => {
+    this.setState(
+      {
+        EditOpen: false,
+      },
+      () => {
+        console.log('Edit Data');
+        console.log(data);
+      }
+    );
+    const message = 'This is Success Message';
+    const status = 'success';
+    value(message, status);
   };
 
-  onSubmit = (data) => {
+  onSubmit = (data, value) => {
     this.setState(
       {
         open: false,
@@ -126,6 +149,9 @@ class TraineeList extends React.Component {
         console.log(data);
       }
     );
+    const message = 'This is Success Message';
+    const status = 'success';
+    value(message, status);
   };
 
   render() {
@@ -162,7 +188,7 @@ class TraineeList extends React.Component {
         <EditDialog
           Editopen={EditOpen}
           handleEditClose={this.handleEditClose}
-          handleEdit={this.handleEdit}
+          handleEdit={() => this.handleEdit}
           data={editData}
         />
         <DeleteDialog
@@ -186,6 +212,7 @@ class TraineeList extends React.Component {
               field: 'createdAt',
               label: 'Date',
               align: 'right',
+              format: getDateFormatted,
             },
           ]}
           actions={[
@@ -212,9 +239,7 @@ class TraineeList extends React.Component {
           <ul>
             {trainees.map(({ name, id }) => (
               <li key={id}>
-                <Link to={`${url}/${id}`}>
-                  {name}
-                </Link>
+                <Link to={`${url}/${id}`}>{name}</Link>
               </li>
             ))}
           </ul>

@@ -3,10 +3,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  TextField, Dialog, DialogActions,
-  DialogContent, DialogContentText, DialogTitle, Button, InputAdornment,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+  InputAdornment,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { snackbarContext } from './../../../../contexts/snackbarProvider';
 import * as yup from 'yup';
 import EmailIcon from '@material-ui/icons/Email';
 import PersonIcon from '@material-ui/icons/Person';
@@ -32,9 +39,17 @@ class AddDialog extends React.Component {
   schema = yup.object().shape({
     name: yup.string().required('Name is required').min(3),
     email: yup.string().email().required('Email is required'),
-    password: yup.string().required('password is required').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]{8,}$/,
-      'must contain 8 characters at least one uppercase one lowercase and one number'),
-    confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match').required('password is required'),
+    password: yup
+      .string()
+      .required('password is required')
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]{8,}$/,
+        'must contain 8 characters at least one uppercase one lowercase and one number'
+      ),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref('password'), null], 'Passwords must match')
+      .required('password is required'),
   });
 
   constructor(props) {
@@ -61,13 +76,15 @@ class AddDialog extends React.Component {
 
   handleChange = (key) => ({ target: { value } }) => {
     this.setState({ [key]: value });
-  }
+  };
 
-    // eslint-disable-next-line consistent-return
-    getError = (field) => {
-      const { touched, error } = this.state;
-      if (touched[field]) {
-        this.schema.validateAt(field, this.state).then(() => {
+  // eslint-disable-next-line consistent-return
+  getError = (field) => {
+    const { touched, error } = this.state;
+    if (touched[field]) {
+      this.schema
+        .validateAt(field, this.state)
+        .then(() => {
           if (error[field] !== '') {
             this.setState({
               error: {
@@ -76,7 +93,8 @@ class AddDialog extends React.Component {
               },
             });
           }
-        }).catch((err) => {
+        })
+        .catch((err) => {
           if (err.message !== error[field]) {
             this.setState({
               error: {
@@ -86,10 +104,9 @@ class AddDialog extends React.Component {
             });
           }
         });
-      }
-      return error[field];
     }
-
+    return error[field];
+  };
 
   isTouched = (field) => {
     const { touched } = this.state;
@@ -99,26 +116,26 @@ class AddDialog extends React.Component {
         [field]: true,
       },
     });
-  }
+  };
 
   hasErrors = () => {
     const { error } = this.state;
     let iserror = Object.values(error);
     iserror = iserror.filter((errorMessage) => errorMessage !== '');
     return !!iserror.length;
-  }
+  };
 
   render() {
-    const {
-      open, onClose, onSubmit,
-    } = this.props;
+    const { open, onClose, onSubmit } = this.props;
     const { classes } = this.props;
-    const {
-      name, email, password, error,
-    } = this.state;
+    const { name, email, password, error } = this.state;
     return (
       <div>
-        <Dialog open={open} onClose={onClose} aria-labelledby='form-dialog-title'>
+        <Dialog
+          open={open}
+          onClose={onClose}
+          aria-labelledby='form-dialog-title'
+        >
           <DialogTitle id='form-dialog-title'>Add Trainee</DialogTitle>
           <DialogContent>
             <DialogContentText className={classes.Content}>
@@ -188,8 +205,7 @@ class AddDialog extends React.Component {
                   }}
                 />
               </div>
-              &nbsp;
-              &nbsp;
+              &nbsp; &nbsp;
               <div className={classes.Demo}>
                 <TextField
                   id='confirm-password'
@@ -216,15 +232,26 @@ class AddDialog extends React.Component {
             <Button onClick={onClose} color='primary'>
               Cancel
             </Button>
-            <Button
-              onClick={() => onSubmit()({
-                name, email, password,
-              })}
-              color='primary'
-              disabled={this.hasErrors()}
-            >
-              Submit
-            </Button>
+            <snackbarContext.Consumer>
+              {(value) => (
+                <Button
+                  onClick={() =>
+                    onSubmit()(
+                      {
+                        name,
+                        email,
+                        password,
+                      },
+                      value
+                    )
+                  }
+                  color='primary'
+                  disabled={this.hasErrors()}
+                >
+                  Submit
+                </Button>
+              )}
+            </snackbarContext.Consumer>
           </DialogActions>
         </Dialog>
       </div>
