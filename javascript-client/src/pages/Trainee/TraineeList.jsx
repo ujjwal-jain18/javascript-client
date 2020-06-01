@@ -38,15 +38,6 @@ class TraineeList extends React.Component {
     };
   }
 
-  handlesnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    this.setState({
-      snackbarOpen: false,
-    });
-  };
-
   handleClickOpen = () => {
     this.setState({ open: true });
   };

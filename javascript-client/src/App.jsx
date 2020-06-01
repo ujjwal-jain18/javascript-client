@@ -17,22 +17,55 @@ import {
 } from './pages/index';
 import { AuthRoute, PrivateRoute } from './routes/index';
 
+const ls = require('local-storage');
+
 function App() {
   return (
     <SnackbarProvider>
-      <Router>
-        <Switch>
-          <Route exact path='/'>
-            <Redirect to='/trainee' />
-          </Route>
-          <AuthRoute exact path='/login' component={Login} />
-          <PrivateRoute exact path='/input-demo' component={InputDemo} />
-          <PrivateRoute exact path='/textfield-demo' component={Demo} />
-          <PrivateRoute exact path='/children-demo' component={ChildrenDemo} />
-          <PrivateRoute path='/trainee' component={Trainee} />
-          <PrivateRoute component={NotFound} />
-        </Switch>
-      </Router>
+      {!ls.get('token') ? (
+        <Router>
+          <Switch>
+            <Route exact path='/'>
+              <Redirect to='/login' />
+            </Route>
+            <AuthRoute exact path='/login' component={Login} />
+            <PrivateRoute path='/trainee' component={Trainee} />
+            <PrivateRoute
+              exact
+              path='/textfield-demo'
+              component={Demo}
+            />
+            <PrivateRoute exact path='/input-demo' component={InputDemo} />
+            <PrivateRoute
+              exact
+              path='/children-demo'
+              component={ChildrenDemo}
+            />
+            <PrivateRoute exact component={NotFound} />
+          </Switch>
+        </Router>
+      ) : (
+        <Router>
+          <Switch>
+            <Route exact path='/'>
+              <Redirect to='/trainee' />
+            </Route>
+            <PrivateRoute path='/trainee' component={Trainee} />
+            <PrivateRoute
+              exact
+              path='/textfield-demo'
+              component={Demo}
+            />
+            <PrivateRoute exact path='/input-demo' component={InputDemo} />
+            <PrivateRoute
+              exact
+              path='/children-demo'
+              component={ChildrenDemo}
+            />
+            <PrivateRoute exact component={NotFound} />
+          </Switch>
+        </Router>
+      )}
     </SnackbarProvider>
   );
 }

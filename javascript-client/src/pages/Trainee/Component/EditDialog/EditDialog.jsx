@@ -2,7 +2,6 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import { snackbarContext } from './../../../../contexts/snackbarProvider';
 import * as yup from 'yup';
 import {
@@ -18,16 +17,6 @@ import {
 import Grid from '@material-ui/core/Grid';
 import EmailIcon from '@material-ui/icons/Email';
 import PersonIcon from '@material-ui/icons/Person';
-
-const useStyles = () => ({
-  button_color: {
-    backgroundColor: 'blue',
-    color: 'black',
-  },
-  button_error: {
-    backgroundColor: '#bbb9b9',
-  },
-});
 
 class EditDialog extends React.Component {
   schema = yup.object().shape({
@@ -96,7 +85,7 @@ class EditDialog extends React.Component {
   };
 
   render() {
-    const { Editopen, handleEditClose, handleEdit, data, classes } = this.props;
+    const { Editopen, handleEditClose, handleEdit, data } = this.props;
     const { name, email, error } = this.state;
     return (
       <div>
@@ -177,13 +166,8 @@ class EditDialog extends React.Component {
                       value
                     )
                   }
-                  className={
-                    (name === data.name && email === data.email) ||
-                    this.hasErrors()
-                      ? classes.button_error
-                      : classes.button_color
-                  }
-                  color='primry'
+                  color='primary'
+                  variant='contained'
                   disabled={
                     (name === data.name && email === data.email) ||
                     this.hasErrors()
@@ -207,4 +191,4 @@ EditDialog.propTypes = {
   handleEdit: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
-export default withStyles(useStyles)(EditDialog);
+export default EditDialog;

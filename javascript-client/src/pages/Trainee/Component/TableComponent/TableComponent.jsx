@@ -25,6 +25,9 @@ const useStyles = (theme) => ({
     '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
     },
+    '&:hover': {
+      backgroundColor: 'darkgrey !important',
+    },
   },
   action: {
     display: 'flex',
@@ -38,81 +41,80 @@ const useStyles = (theme) => ({
 });
 
 function TableComponent(props) {
-    const {
-      classes,
-      data,
-      column,
-      actions,
-      onSort,
-      orderBy,
-      order,
-      onSelect,
-      count,
-      page,
-      rowsPerPage,
-      onChangePage,
-      onChangeRowsPerPage,
-    } = props;
-    return (
-      <div>
-        <TableContainer component={Paper} elevation={3}>
-          <Table className={classes.table} aria-label='simple table'>
-            <TableHead>
-              <TableRow>
-                {column.map((col) => (
-                  <TableCell
-                    className={classes.header}
-                    align={col.align}
-                    sortDirection={orderBy === col.label ? order : false}
+  const {
+    classes,
+    data,
+    column,
+    actions,
+    onSort,
+    orderBy,
+    order,
+    onSelect,
+    count,
+    page,
+    rowsPerPage,
+    onChangePage,
+    onChangeRowsPerPage,
+  } = props;
+  return (
+    <div>
+      <TableContainer component={Paper} elevation={3}>
+        <Table className={classes.table} aria-label='simple table'>
+          <TableHead>
+            <TableRow>
+              {column.map((col) => (
+                <TableCell
+                  className={classes.header}
+                  align={col.align}
+                  sortDirection={orderBy === col.label ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === col.label}
+                    direction={orderBy === col.label ? order : 'asc'}
+                    onClick={onSort(col.label)}
                   >
-                    <TableSortLabel
-                      active={orderBy === col.label}
-                      direction={orderBy === col.label ? order : 'asc'}
-                      onClick={onSort(col.label)}
-                    >
-                      {col.label}
-                    </TableSortLabel>
+                    {col.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.map((element) => (
+              <TableRow key={element.id} className={classes.cover} hover>
+                {column.map(({ field, align, format }) => (
+                  <TableCell align={align} onClick={onSelect(element)}>
+                    {format !== undefined
+                      ? format(element[field])
+                      : element[field]}
                   </TableCell>
                 ))}
+                {actions.map(({ Icon, handler }) => (
+                  <IconButton
+                    onClick={handler(element)}
+                    className={classes.action}
+                  >
+                    {Icon}
+                  </IconButton>
+                ))}
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.map((element) => (
-                <TableRow
-                  key={element.id}
-                  className={classes.cover}
-                  hover
-                >
-                  {column.map(({ field, align, format }) => (
-                    <TableCell align={align} onClick={onSelect(element)}>
-                      {format !== undefined
-                        ? format(element[field])
-                        : element[field]}
-                    </TableCell>
-                  ))}
-                  {actions.map(({ Icon, handler }) => (
-                    <IconButton onClick={handler(element)} className={classes.action}>
-                      {Icon}
-                    </IconButton>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <TablePagination
-            className={classes.pages}
-            rowsPerPageOptions={[5, 10, 25]}
-            component='div'
-            count={count}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={onChangePage}
-            onChangeRowsPerPage={onChangeRowsPerPage}
-          />
-        </TableContainer>
-      </div>
-    );
-  }
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          className={classes.pages}
+          rowsPerPageOptions={[5, 10, 25]}
+          component='div'
+          count={count}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={onChangePage}
+          onChangeRowsPerPage={onChangeRowsPerPage}
+        />
+      </TableContainer>
+    </div>
+  );
+}
 
 TableComponent.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,

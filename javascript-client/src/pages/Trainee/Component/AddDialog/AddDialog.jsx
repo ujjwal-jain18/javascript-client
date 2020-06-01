@@ -246,6 +246,7 @@ class AddDialog extends React.Component {
                     )
                   }
                   color='primary'
+                  variant='contained'
                   disabled={this.hasErrors()}
                 >
                   Submit

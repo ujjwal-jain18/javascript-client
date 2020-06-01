@@ -3,7 +3,11 @@ import React from 'react';
 import PropType from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  Card, CardContent, CardMedia, Typography, Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Button,
 } from '@material-ui/core';
 import { Link, Route } from 'react-router-dom';
 import NotFound from '../Nomatch';
@@ -46,9 +50,7 @@ function TraineeDetail(props) {
   const trainee = trainees.find(({ id }) => id === match.params.traineeId);
   const { classes } = props;
   if (trainee === undefined) {
-    return (
-      <Route component={NotFound} />
-    );
+    return <Route component={NotFound} />;
   }
   return (
     <>
@@ -58,21 +60,26 @@ function TraineeDetail(props) {
         </CardMedia>
         <div className={classes.details}>
           <CardContent className={classes.content}>
-            <Typography component="h5" variant="h5">
+            <Typography component='h5' variant='h5'>
               {trainee.name}
             </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
+            <Typography variant='subtitle1' color='textSecondary'>
               {trainee.createdAt}
             </Typography>
-            <Typography component="h6" variant="h6">
+            <Typography component='h6' variant='h6'>
               {trainee.email}
             </Typography>
-                &nbsp;
+            &nbsp;
           </CardContent>
         </div>
       </Card>
-      <Button color="inherit" className={classes.container} component={Link} to="/trainee">
-            Back
+      <Button
+        color='inherit'
+        className={classes.container}
+        component={Link}
+        to='/trainee'
+      >
+        Back
       </Button>
     </>
   );
