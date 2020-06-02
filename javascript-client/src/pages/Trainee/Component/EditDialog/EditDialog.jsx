@@ -87,6 +87,7 @@ class EditDialog extends React.Component {
   render() {
     const { Editopen, handleEditClose, handleEdit, data } = this.props;
     const { name, email, error } = this.state;
+    const { name: editName , email: editEmail  } = data
     return (
       <div>
         <Dialog
@@ -110,7 +111,7 @@ class EditDialog extends React.Component {
                   variant='outlined'
                   style={{ width: '100%' }}
                   margin='dense'
-                  defaultValue={data.name}
+                  defaultValue={editName}
                   helperText={this.getError('name')}
                   onChange={this.handleOnChange('name')}
                   fullWidth
@@ -133,7 +134,7 @@ class EditDialog extends React.Component {
                   variant='outlined'
                   style={{ width: '100%' }}
                   margin='dense'
-                  defaultValue={data.email}
+                  defaultValue={editEmail}
                   helperText={this.getError('email')}
                   onChange={this.handleOnChange('email')}
                   InputProps={{
@@ -169,7 +170,7 @@ class EditDialog extends React.Component {
                   color='primary'
                   variant='contained'
                   disabled={
-                    (name === data.name && email === data.email) ||
+                    (name === editName && email === editEmail) ||
                     this.hasErrors()
                       ? true
                       : false
