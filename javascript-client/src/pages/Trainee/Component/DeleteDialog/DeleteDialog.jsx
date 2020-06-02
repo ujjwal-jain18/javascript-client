@@ -2,7 +2,6 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import { snackbarContext } from './../../../../contexts/snackbarProvider';
 import {
   Dialog,
@@ -13,15 +12,8 @@ import {
   Button,
 } from '@material-ui/core';
 
-const useStyles = () => ({
-  button_color: {
-    backgroundColor: 'blue',
-    color: 'white',
-  },
-});
-
 function DeleteDialog(props) {
-  const { openRemove, onClose, remove, classes } = props;
+  const { openRemove, onClose, remove } = props;
   return (
     <div>
       <Dialog
@@ -47,8 +39,8 @@ function DeleteDialog(props) {
                   remove(value);
                 }}
                 color='primary'
+                variant='contained'
                 autoFocus
-                className={classes.button_color}
               >
                 Delete
               </Button>
@@ -65,4 +57,4 @@ DeleteDialog.propTypes = {
   remove: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
-export default withStyles(useStyles)(DeleteDialog);
+export default DeleteDialog;

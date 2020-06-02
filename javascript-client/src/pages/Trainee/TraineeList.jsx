@@ -38,15 +38,6 @@ class TraineeList extends React.Component {
     };
   }
 
-  handlesnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    this.setState({
-      snackbarOpen: false,
-    });
-  };
-
   handleClickOpen = () => {
     this.setState({ open: true });
   };
@@ -96,7 +87,7 @@ class TraineeList extends React.Component {
   };
 
   handleRemove = (value) => {
-    const Date_compare = '2019-02-12T18:15:11.778Z';
+    const Date_compare = '2019-02-14T18:15:11.778Z';
     const { deleteData } = this.state;
     const { createdAt } = deleteData;
     const isAfter = moment(createdAt).isAfter(Date_compare);

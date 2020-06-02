@@ -1,18 +1,26 @@
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { PrivateLayout } from '../Layout/index';
+
+const ls = require('local-storage');
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={(matchProps) => (
-      <PrivateLayout>
-        <Component {...matchProps} />
-      </PrivateLayout>
-    )}
+    render={(matchProps) => {
+      if (ls.get('token')) {
+        return (
+          <PrivateLayout>
+            <Component {...matchProps} />
+          </PrivateLayout>
+        );
+      } else {
+        return <Redirect to='/login' />;
+      }
+    }}
   />
 );
 PrivateRoute.propTypes = {
