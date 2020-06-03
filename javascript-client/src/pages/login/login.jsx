@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable react/destructuring-assignment */
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import {
   TextField,
   Dialog,
@@ -11,23 +11,21 @@ import {
   DialogContent,
   DialogTitle,
   Button,
-} from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import * as yup from 'yup';
-import EmailIcon from '@material-ui/icons/Email';
-import callApi from '../../libs/utils/api';
-import { Redirect } from 'react-router-dom';
-import { snackbarContext } from '../../contexts/index';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-
-const ls = require('local-storage');
+} from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import * as yup from "yup";
+import EmailIcon from "@material-ui/icons/Email";
+import callApi from "../../libs/utils/api";
+import { Redirect } from "react-router-dom";
+import { snackbarContext } from "../../contexts/index";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 const styling = (theme) => ({
   Content: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     flex: 1,
   },
   root: {
@@ -40,13 +38,13 @@ const styling = (theme) => ({
 });
 class Login extends React.Component {
   schema = yup.object().shape({
-    email: yup.string().email().required('Email is required'),
+    email: yup.string().email().required("Email is required"),
     password: yup
       .string()
-      .required('password is required')
+      .required("password is required")
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-        'must contain 8 characters at least one \n uppercase one lowercase and one number'
+        "must contain 8 characters at least one \n uppercase one lowercase and one number"
       ),
   });
   constructor(props) {
@@ -55,15 +53,15 @@ class Login extends React.Component {
       loader: false,
       disabled: true,
       redirect: false,
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       touched: {
         email: false,
         password: false,
       },
       error: {
-        email: '',
-        password: '',
+        email: "",
+        password: "",
       },
     };
   }
@@ -79,12 +77,12 @@ class Login extends React.Component {
       this.schema
         .validateAt(field, this.state)
         .then(() => {
-          if (error[field] !== '') {
+          if (error[field] !== "") {
             this.setState(
               {
                 error: {
                   ...error,
-                  [field]: '',
+                  [field]: "",
                 },
               },
               () => {
@@ -118,16 +116,24 @@ class Login extends React.Component {
       disabled: true,
       loader: true,
     });
-    await callApi('post', '/user/login/', { email, password }, value);
+    const response = await callApi(
+      "post",
+      "/user/login",
+      { data: { email, password } },
+      value
+    );
+    if (response.status === "ok") {
+      localStorage.setItem("token", response.data);
+      this.setState({
+        redirect: true,
+      });
+    } else {
+      value(response.message, "error");
+    }
     this.setState({
       disabled: false,
       loader: false,
     });
-    if (ls.get('token')) {
-      this.setState({
-        redirect: true,
-      });
-    }
   };
 
   isTouched = (field) => {
@@ -149,9 +155,9 @@ class Login extends React.Component {
     const { error, touched } = this.state;
     let alltouched = Object.values(touched);
     let iserror = Object.values(error);
-    iserror = iserror.filter((errorMessage) => errorMessage !== '');
+    iserror = iserror.filter((errorMessage) => errorMessage !== "");
     alltouched = alltouched.every((value) => value);
-    iserror = iserror.every((value) => value === '');
+    iserror = iserror.every((value) => value === "");
     if (iserror && alltouched) {
       this.setState({
         disabled: false,
@@ -166,7 +172,7 @@ class Login extends React.Component {
   renderRedirect = () => {
     const { redirect } = this.state;
     if (redirect) {
-      return <Redirect to='/trainee' />;
+      return <Redirect to="/trainee" />;
     }
   };
 
@@ -175,26 +181,26 @@ class Login extends React.Component {
     const { error, disabled, loader } = this.state;
     return (
       <div className={classes.Content}>
-        <Dialog open aria-labelledby='form-dialog-title'>
+        <Dialog open aria-labelledby="form-dialog-title">
           <Avatar className={classes.root}>
             <LockOutlinedIcon />
           </Avatar>
-          <DialogTitle id='form-dialog-title' align='center'>
+          <DialogTitle id="form-dialog-title" align="center">
             Login
           </DialogTitle>
           <DialogContent>
             <TextField
-              id='email'
+              id="email"
               error={!!error.email}
-              label='EmailAddress'
-              type='email'
-              variant='outlined'
-              onChange={this.handleChange('email')}
-              helperText={this.getError('email')}
-              onBlur={() => this.isTouched('email')}
+              label="EmailAddress"
+              type="email"
+              variant="outlined"
+              onChange={this.handleChange("email")}
+              helperText={this.getError("email")}
+              onBlur={() => this.isTouched("email")}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position='start'>
+                  <InputAdornment position="start">
                     <EmailIcon />
                   </InputAdornment>
                 ),
@@ -205,17 +211,17 @@ class Login extends React.Component {
             <br />
             <div className={classes.Demo}>
               <TextField
-                id='password'
+                id="password"
                 error={!!error.password}
-                label='password'
-                type='password'
-                variant='outlined'
-                onChange={this.handleChange('password')}
-                helperText={this.getError('password')}
-                onBlur={() => this.isTouched('password')}
+                label="password"
+                type="password"
+                variant="outlined"
+                onChange={this.handleChange("password")}
+                helperText={this.getError("password")}
+                onBlur={() => this.isTouched("password")}
                 InputProps={{
                   startAdornment: (
-                    <InputAdornment position='start'>
+                    <InputAdornment position="start">
                       <VisibilityOffIcon />
                     </InputAdornment>
                   ),
@@ -228,14 +234,14 @@ class Login extends React.Component {
             <snackbarContext.Consumer>
               {(value) => (
                 <Button
-                  color='primary'
-                  variant='contained'
+                  color="primary"
+                  variant="contained"
                   onClick={() => this.onClickHandler(value)}
                   disabled={disabled}
                   fullWidth
                 >
                   {this.renderRedirect()}
-                  <span>{loader ? <CircularProgress size={20} /> : ''}</span>
+                  <span>{loader ? <CircularProgress size={20} /> : ""}</span>
                   SIGNIN
                 </Button>
               )}

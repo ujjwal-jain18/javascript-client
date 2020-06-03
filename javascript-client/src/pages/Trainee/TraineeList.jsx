@@ -6,11 +6,13 @@ import { withStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Link, BrowserRouter as Router } from 'react-router-dom';
+import { snackbarContext } from './../../contexts/index';
 import { Button } from '@material-ui/core';
+import callApi from '../../libs/utils/api';
 import * as moment from 'moment';
 import {
   AddDialog,
-  TableComponent,
+  WrapTable,
   EditDialog,
   DeleteDialog,
 } from './Component/index';
@@ -28,14 +30,53 @@ class TraineeList extends React.Component {
       open: false,
       EditOpen: false,
       RemoveOpen: false,
+      loader: false,
       orderBy: '',
       order: 'asc',
-      data: {},
+      traineedata: {},
+      data: [],
       editData: {},
       deleteDate: {},
       page: 0,
       rowsPerPage: 10,
     };
+  }
+
+  async componentDidMount() {
+    const token = localStorage.getItem('token');
+    this.setState({
+      loader: true,
+    });
+    const response = await callApi(
+      'get',
+      '/trainee',
+      {
+        params: {
+          skip: 0,
+          limit: 20,
+        },
+      },
+      {
+        headers: {
+          authorization: token,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    if (response.status === 'ok') {
+      this.setState({
+        rowsPerPage: 20,
+        data: response.data.records,
+        loader: false,
+      });
+    } else {
+      const value = this.context;
+      value(response.message, 'error');
+      this.setState({
+        loader: false,
+      });
+    }
   }
 
   handleClickOpen = () => {
@@ -56,7 +97,7 @@ class TraineeList extends React.Component {
 
   handleSelect = (element) => (event) => {
     this.setState({
-      data: element,
+      traineedata: element,
     });
   };
 
@@ -131,7 +172,7 @@ class TraineeList extends React.Component {
     value(message, status);
   };
 
-  onSubmit = (data, value) => {
+  onSubmit = (data) => {
     this.setState(
       {
         open: false,
@@ -140,9 +181,6 @@ class TraineeList extends React.Component {
         console.log(data);
       }
     );
-    const message = 'This is Success Message';
-    const status = 'success';
-    value(message, status);
   };
 
   render() {
@@ -151,7 +189,9 @@ class TraineeList extends React.Component {
       orderBy,
       order,
       editData,
+      data,
       page,
+      loader,
       rowsPerPage,
       EditOpen,
       RemoveOpen,
@@ -187,8 +227,10 @@ class TraineeList extends React.Component {
           onClose={this.handleRemoveClose}
           remove={this.handleRemove}
         />
-        <TableComponent
-          data={trainees}
+        <WrapTable
+          loader={loader}
+          datalength={data.length}
+          data={data}
           column={[
             {
               field: 'name',
@@ -244,3 +286,4 @@ TraineeList.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 export default withStyles(styles)(TraineeList);
+TraineeList.contextType = snackbarContext;

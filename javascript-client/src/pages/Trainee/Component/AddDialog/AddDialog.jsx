@@ -14,6 +14,8 @@ import {
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { snackbarContext } from './../../../../contexts/snackbarProvider';
+import callApi from '../../../../libs/utils/api';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import * as yup from 'yup';
 import EmailIcon from '@material-ui/icons/Email';
 import PersonIcon from '@material-ui/icons/Person';
@@ -43,8 +45,8 @@ class AddDialog extends React.Component {
       .string()
       .required('password is required')
       .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]{8,}$/,
-        'must contain 8 characters at least one uppercase one lowercase and one number'
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+        "must contain 8 characters at least one \n uppercase one lowercase and one number"
       ),
     confirmPassword: yup
       .string()
@@ -59,6 +61,8 @@ class AddDialog extends React.Component {
       email: '',
       password: '',
       confirmPassword: '',
+      loader: false,
+      disabled: true,
       touched: {
         name: false,
         email: false,
@@ -86,22 +90,32 @@ class AddDialog extends React.Component {
         .validateAt(field, this.state)
         .then(() => {
           if (error[field] !== '') {
-            this.setState({
-              error: {
-                ...error,
-                [field]: '',
+            this.setState(
+              {
+                error: {
+                  ...error,
+                  [field]: '',
+                },
               },
-            });
+              () => {
+                this.hasErrors();
+              }
+            );
           }
         })
         .catch((err) => {
           if (err.message !== error[field]) {
-            this.setState({
-              error: {
-                ...error,
-                [field]: err.message,
+            this.setState(
+              {
+                error: {
+                  ...error,
+                  [field]: err.message,
+                },
               },
-            });
+              () => {
+                this.hasErrors();
+              }
+            );
           }
         });
     }
@@ -110,25 +124,74 @@ class AddDialog extends React.Component {
 
   isTouched = (field) => {
     const { touched } = this.state;
-    this.setState({
-      touched: {
-        ...touched,
-        [field]: true,
+    this.setState(
+      {
+        touched: {
+          ...touched,
+          [field]: true,
+        },
       },
-    });
+      () => {
+        this.getError(field);
+      }
+    );
   };
 
   hasErrors = () => {
-    const { error } = this.state;
+    const { error, touched } = this.state;
+    let alltouched = Object.values(touched);
     let iserror = Object.values(error);
     iserror = iserror.filter((errorMessage) => errorMessage !== '');
-    return !!iserror.length;
+    alltouched = alltouched.every((value) => value);
+    iserror = iserror.every((value) => value === '');
+    if (iserror && alltouched) {
+      this.setState({
+        disabled: false,
+      });
+    } else {
+      this.setState({
+        disabled: true,
+      });
+    }
   };
+  onClickHandler = async (value) => {
+    const { name, email, password } = this.state;
+    const token = localStorage.getItem('token');
+    const { onSubmit } = this.props;
+    await this.setState({
+      loader: true,
+      disabled: true,
+    });
 
+    const response = await callApi(
+      'post',
+      '/trainee',
+      { data: { name, email, password } },
+      {
+        headers: {
+          authorization: token,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    if (response.status === 'ok') {
+      onSubmit({ name, email, password });
+      value(response.message, 'success');
+    } else {
+      value(response.message, 'error');
+    }
+
+    this.setState({
+      loader: false,
+      disabled: false,
+    });
+  };
+  
   render() {
-    const { open, onClose, onSubmit } = this.props;
+    const { open, onClose } = this.props;
     const { classes } = this.props;
-    const { name, email, password, error } = this.state;
+    const { error, disabled, loader } = this.state;
     return (
       <div>
         <Dialog
@@ -235,20 +298,12 @@ class AddDialog extends React.Component {
             <snackbarContext.Consumer>
               {(value) => (
                 <Button
-                  onClick={() =>
-                    onSubmit()(
-                      {
-                        name,
-                        email,
-                        password,
-                      },
-                      value
-                    )
-                  }
+                  onClick={() => this.onClickHandler(value)}
                   color='primary'
                   variant='contained'
-                  disabled={this.hasErrors()}
+                  disabled={disabled}
                 >
+                  <span>{loader ? <CircularProgress size={20} /> : ''}</span>
                   Submit
                 </Button>
               )}

@@ -1,3 +1,3 @@
-import TableComponent from './TableComponent';
+import WrapTable from './TableComponent';
 
-export default TableComponent;
+export default WrapTable;

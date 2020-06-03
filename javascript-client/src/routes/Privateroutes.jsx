@@ -5,13 +5,11 @@ import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { PrivateLayout } from '../Layout/index';
 
-const ls = require('local-storage');
-
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={(matchProps) => {
-      if (ls.get('token')) {
+      if (localStorage.getItem('token')) {
         return (
           <PrivateLayout>
             <Component {...matchProps} />

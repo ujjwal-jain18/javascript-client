@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import {withLoaderandMessage} from '../../../../components/index';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -32,7 +33,7 @@ const useStyles = (theme) => ({
   action: {
     display: 'flex',
     flexDirection: 'column',
-    maxHeight: 30,
+    maxHeight: 10,
     marginLeft: theme.spacing(10),
   },
   pages: {
@@ -80,30 +81,34 @@ function TableComponent(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((element) => (
-              <TableRow key={element.id} className={classes.cover} hover>
-                {column.map(({ field, align, format }) => (
-                  <TableCell align={align} onClick={onSelect(element)}>
-                    {format !== undefined
-                      ? format(element[field])
-                      : element[field]}
+            {data
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((element) => (
+                <TableRow key={element.id} className={classes.cover} hover>
+                  {column.map(({ field, align, format }) => (
+                    <TableCell align={align} onClick={onSelect(element)}>
+                      {format !== undefined
+                        ? format(element[field])
+                        : element[field]}
+                    </TableCell>
+                  ))}
+                  <TableCell>
+                  {actions.map(({ Icon, handler }) => (
+                    <IconButton
+                      onClick={handler(element)}
+                      className={classes.action}
+                    >
+                      {Icon}
+                    </IconButton>
+                  ))}
                   </TableCell>
-                ))}
-                {actions.map(({ Icon, handler }) => (
-                  <IconButton
-                    onClick={handler(element)}
-                    className={classes.action}
-                  >
-                    {Icon}
-                  </IconButton>
-                ))}
-              </TableRow>
-            ))}
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
         <TablePagination
           className={classes.pages}
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10, 20,25]}
           component='div'
           count={count}
           rowsPerPage={rowsPerPage}
@@ -134,4 +139,5 @@ TableComponent.defaultProps = {
   order: 'asc',
   onSort: () => {},
 };
-export default withStyles(useStyles)(TableComponent);
+const WrapTable = withLoaderandMessage(TableComponent)
+export default withStyles(useStyles)(WrapTable);
