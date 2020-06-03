@@ -6,8 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
-const ls = require('local-storage');
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -21,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const handleLogout = () => {
-  ls.remove('token');
+  localStorage.removeItem('token');
 };
 
 export default function NavBar() {
