@@ -84,7 +84,7 @@ function TableComponent(props) {
             {data
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((element) => (
-                <TableRow key={element.id} className={classes.cover} hover>
+                <TableRow className={classes.cover} hover>
                   {column.map(({ field, align, format }) => (
                     <TableCell align={align} onClick={onSelect(element)}>
                       {format !== undefined

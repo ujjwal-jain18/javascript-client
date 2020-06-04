@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from './style';
 
 function ButtonField(props) {
-  const {
-    color, style, value, onClick, disabled,
-  } = props;
+  const { color, style, value, onClick, disabled } = props;
   return (
     <>
       <Button

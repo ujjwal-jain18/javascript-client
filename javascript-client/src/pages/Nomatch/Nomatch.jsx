@@ -1,7 +1,10 @@
 import React from 'react';
 import PropType from 'prop-types';
 import {
-  withStyles, createMuiTheme, ThemeProvider, Typography,
+  withStyles,
+  createMuiTheme,
+  ThemeProvider,
+  Typography,
 } from '@material-ui/core';
 
 const styles = () => ({
@@ -13,9 +16,7 @@ const styles = () => ({
 const theme = createMuiTheme({
   typography: {
     htmlFontSize: 10,
-    fontFamily: [
-      'Arial',
-    ].join(','),
+    fontFamily: ['Arial'].join(','),
   },
 });
 function NotFound(props) {
@@ -24,13 +25,9 @@ function NotFound(props) {
     <>
       <ThemeProvider theme={theme}>
         <Typography>
-          <div className={classes.Text} align="center">
-            <h1>
-                NOT FOUND
-            </h1>
-            <h4>
-            seems like the pages you are looking after does not exist
-            </h4>
+          <div className={classes.Text} align='center'>
+            <h1>NOT FOUND</h1>
+            <h4>seems like the pages you are looking after does not exist</h4>
           </div>
         </Typography>
       </ThemeProvider>

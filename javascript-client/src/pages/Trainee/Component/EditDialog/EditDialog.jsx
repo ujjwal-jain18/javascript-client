@@ -3,6 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { snackbarContext } from './../../../../contexts/snackbarProvider';
+import callApi from '../../../../libs/utils/api';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import * as yup from 'yup';
 import {
   TextField,
@@ -28,6 +30,8 @@ class EditDialog extends React.Component {
     this.state = {
       name: '',
       email: '',
+      loader: false,
+      disabled: true,
       error: {
         name: '',
         email: '',
@@ -56,38 +60,97 @@ class EditDialog extends React.Component {
       .validateAt(field, this.state)
       .then(() => {
         if (error[field] !== '') {
-          this.setState({
-            error: {
-              ...error,
-              [field]: '',
+          this.setState(
+            {
+              error: {
+                ...error,
+                [field]: '',
+              },
             },
-          });
+            () => {
+              this.hasErrors();
+            }
+          );
         }
       })
       .catch((err) => {
         if (err.message !== error[field]) {
-          this.setState({
-            error: {
-              ...error,
-              [field]: err.message,
+          this.setState(
+            {
+              error: {
+                ...error,
+                [field]: err.message,
+              },
             },
-          });
+            () => {
+              this.hasErrors();
+            }
+          );
         }
       });
     return error[field];
   };
 
   hasErrors = () => {
-    const { error } = this.state;
+    const { name, email, error } = this.state;
+    const { data } = this.props;
+    const { name: editName, email: editEmail } = data;
     let iserror = Object.values(error);
     iserror = iserror.filter((errorMessage) => errorMessage !== '');
-    return !!iserror.length;
+    iserror = iserror.every((value) => value === '');
+    if (!iserror || (name === editName && email === editEmail)) {
+      this.setState({
+        disabled: true,
+      });
+    }
+    if (iserror && (name !== editName || email !== editEmail)) {
+      this.setState({
+        disabled: false,
+      });
+    }
+  };
+  onClickHandler = async (value) => {
+    const { name, email, password } = this.state;
+    const token = localStorage.getItem('token');
+    const { handleEdit, data, handleEditClose } = this.props;
+    const { originalId: editId } = data;
+    await this.setState({
+      loader: true,
+      disabled: true,
+    });
+    const response = await callApi(
+      'put',
+      '/trainee',
+      { data: { name, email, password, id: editId } },
+      {
+        headers: {
+          authorization: token,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    if (response.status === 'ok') {
+      handleEdit({
+        name,
+        email,
+      });
+      value(response.message, 'success');
+      handleEditClose();
+    } else {
+      value(response.message, 'error');
+    }
+
+    this.setState({
+      loader: false,
+      disabled: false,
+    });
   };
 
   render() {
-    const { Editopen, handleEditClose, handleEdit, data } = this.props;
-    const { name, email, error } = this.state;
-    const { name: editName , email: editEmail  } = data
+    const { Editopen, handleEditClose, data } = this.props;
+    const { error, loader, disabled } = this.state;
+    const { name: editName, email: editEmail } = data;
     return (
       <div>
         <Dialog
@@ -158,24 +221,12 @@ class EditDialog extends React.Component {
             <snackbarContext.Consumer>
               {(value) => (
                 <Button
-                  onClick={() =>
-                    handleEdit()(
-                      {
-                        name,
-                        email,
-                      },
-                      value
-                    )
-                  }
+                  onClick={() => this.onClickHandler(value)}
                   color='primary'
                   variant='contained'
-                  disabled={
-                    (name === editName && email === editEmail) ||
-                    this.hasErrors()
-                      ? true
-                      : false
-                  }
+                  disabled={disabled}
                 >
+                  <span>{loader ? <CircularProgress size={20} /> : ''}</span>
                   Submit
                 </Button>
               )}
@@ -190,6 +241,5 @@ EditDialog.propTypes = {
   Editopen: PropTypes.bool.isRequired,
   handleEditClose: PropTypes.func.isRequired,
   handleEdit: PropTypes.func.isRequired,
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 export default EditDialog;

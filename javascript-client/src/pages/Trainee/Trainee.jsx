@@ -6,7 +6,9 @@ import TraineeList from './TraineeList';
 import TraineeDetail from './TraineeDetail';
 
 function Trainee(props) {
-  const { match: { path } } = props;
+  const {
+    match: { path },
+  } = props;
   return (
     <Switch>
       <Route exact path={path} component={TraineeList} />

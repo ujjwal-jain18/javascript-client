@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-export default async function callApi(method, url, data, option={}) {
+export default async function callApi(method, url, data = {}, option = {}) {
   try {
     const finalUrl = process.env.REACT_APP_BASE_URL + url;
     const response = await axios({

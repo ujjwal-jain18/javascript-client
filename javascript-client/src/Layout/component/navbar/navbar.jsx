@@ -47,7 +47,7 @@ export default function NavBar() {
           >
             ChildrenDemo
           </Button>
-          <Button color='inherit' href='/login' onClick={ () => handleLogout()}>
+          <Button color='inherit' href='/login' onClick={() => handleLogout()}>
             Logout
           </Button>
         </Toolbar>

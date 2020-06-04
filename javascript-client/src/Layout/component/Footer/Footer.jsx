@@ -5,10 +5,10 @@ import Typography from '@material-ui/core/Typography';
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
+    <Typography variant='body2' color='textSecondary' align='center'>
       {' © '}
-      <Link color="inherit" href="https://successive.tech">
-      Successive Technology
+      <Link color='inherit' href='https://successive.tech'>
+        Successive Technology
       </Link>
     </Typography>
   );
