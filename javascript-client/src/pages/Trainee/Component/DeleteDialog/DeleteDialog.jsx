@@ -30,7 +30,6 @@ class DeleteDialog extends React.Component {
       loader: true,
       disabled: true,
     });
-    console.log(deleteId);
     const response = await callApi(
       'delete',
       `/trainee/${deleteId}`,

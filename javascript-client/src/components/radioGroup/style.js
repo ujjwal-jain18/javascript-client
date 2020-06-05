@@ -4,7 +4,6 @@ const Input = styled.input`
   display: inline;
   &.error {
     border: 1px solid red;
-    text-color: red;
   }
   &.noerror {
     display: none;

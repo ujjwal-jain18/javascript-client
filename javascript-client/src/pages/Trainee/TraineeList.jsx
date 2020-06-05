@@ -74,7 +74,6 @@ class TraineeList extends React.Component {
         loader: false,
         count: response.data.records.length,
       });
-      console.log('status', this.state.page);
     } else {
       const value = this.context;
       value(response.message, 'error');
@@ -133,11 +132,9 @@ class TraineeList extends React.Component {
 
   handleRemove = () => {
     this.handleFetchData();
-    const { count, rowsPerPage, page } = this.state;
+    const { count, rowsPerPage, page, data } = this.state;
     const mod = count % rowsPerPage;
-    console.log('mod', mod, 'count', count, 'rowperpage', rowsPerPage);
-    if (mod === 1) {
-      console.log(this.state.page);
+    if (mod === 1 && data.length !== 1) {
       this.setState({
         page: page - 1,
       });
