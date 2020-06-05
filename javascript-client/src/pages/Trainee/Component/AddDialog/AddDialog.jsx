@@ -46,7 +46,7 @@ class AddDialog extends React.Component {
       .required('password is required')
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-        "must contain 8 characters at least one \n uppercase one lowercase and one number"
+        'must contain 8 characters at least one \n uppercase one lowercase and one number'
       ),
     confirmPassword: yup
       .string()
@@ -132,7 +132,7 @@ class AddDialog extends React.Component {
         },
       },
       () => {
-        this.getError(field);
+        this.hasErrors();
       }
     );
   };
@@ -187,7 +187,7 @@ class AddDialog extends React.Component {
       disabled: false,
     });
   };
-  
+
   render() {
     const { open, onClose } = this.props;
     const { classes } = this.props;

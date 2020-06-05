@@ -5,11 +5,12 @@ import PropTypes from 'prop-types';
 import Img from './style';
 
 import {
-  PUBLIC_IMAGE_FOLDER, DEFAULT_BANNER_IMAGE, Total,
+  PUBLIC_IMAGE_FOLDER,
+  DEFAULT_BANNER_IMAGE,
+  Total,
 } from '../../configs/constants';
 
 import { getNextRoundRobin, getRandomNumber } from '../../libs/utils/math';
-
 
 class Slider extends React.Component {
   constructor(props) {
@@ -38,23 +39,31 @@ class Slider extends React.Component {
 
   render() {
     const { current } = this.state;
-    const {
-      alttext, height, duration, banner,
-    } = this.props;
+    const { alttext, height, duration, banner } = this.props;
     const { defaultbanner } = this.props;
     if (current === -1 || banner.length === 0) {
       return (
         <>
-          <div align="center">
-            <Img src={`${PUBLIC_IMAGE_FOLDER}${defaultbanner}`} alt={alttext} height={height} duration={duration} />
+          <div align='center'>
+            <Img
+              src={`${PUBLIC_IMAGE_FOLDER}${defaultbanner}`}
+              alt={alttext}
+              height={height}
+              duration={duration}
+            />
           </div>
         </>
       );
     }
     return (
       <>
-        <div align="center">
-          <Img src={`${PUBLIC_IMAGE_FOLDER}${banner[current]}`} alt={alttext} height={height} duration={duration} />
+        <div align='center'>
+          <Img
+            src={`${PUBLIC_IMAGE_FOLDER}${banner[current]}`}
+            alt={alttext}
+            height={height}
+            duration={duration}
+          />
         </div>
       </>
     );

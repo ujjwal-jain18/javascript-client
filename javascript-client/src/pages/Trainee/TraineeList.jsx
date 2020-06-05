@@ -9,7 +9,6 @@ import { Link, BrowserRouter as Router } from 'react-router-dom';
 import { snackbarContext } from './../../contexts/index';
 import { Button } from '@material-ui/core';
 import callApi from '../../libs/utils/api';
-import * as moment from 'moment';
 import {
   AddDialog,
   WrapTable,
@@ -36,13 +35,18 @@ class TraineeList extends React.Component {
       traineedata: {},
       data: [],
       editData: {},
-      deleteDate: {},
+      deleteData: {},
+      count: 100,
       page: 0,
       rowsPerPage: 10,
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.handleFetchData();
+  }
+
+  async handleFetchData() {
     const token = localStorage.getItem('token');
     this.setState({
       loader: true,
@@ -53,7 +57,7 @@ class TraineeList extends React.Component {
       {
         params: {
           skip: 0,
-          limit: 20,
+          limit: 100,
         },
       },
       {
@@ -66,9 +70,9 @@ class TraineeList extends React.Component {
     );
     if (response.status === 'ok') {
       this.setState({
-        rowsPerPage: 20,
         data: response.data.records,
         loader: false,
+        count: response.data.records.length,
       });
     } else {
       const value = this.context;
@@ -78,7 +82,6 @@ class TraineeList extends React.Component {
       });
     }
   }
-
   handleClickOpen = () => {
     this.setState({ open: true });
   };
@@ -127,19 +130,19 @@ class TraineeList extends React.Component {
     });
   };
 
-  handleRemove = (value) => {
-    const Date_compare = '2019-02-14T18:15:11.778Z';
+  handleRemove = () => {
+    this.handleFetchData();
+    const { count, rowsPerPage, page, data } = this.state;
+    const mod = count % rowsPerPage;
+    if (mod === 1 && data.length !== 1) {
+      this.setState({
+        page: page - 1,
+      });
+    }
     const { deleteData } = this.state;
-    const { createdAt } = deleteData;
-    const isAfter = moment(createdAt).isAfter(Date_compare);
     this.setState({
       RemoveOpen: false,
     });
-    const message = isAfter
-      ? 'This is Error Message'
-      : 'This is Success Message';
-    const status = isAfter ? 'error' : 'success';
-    value(message, status);
     console.log('DELETE ITEM');
     console.log(deleteData);
   };
@@ -157,28 +160,27 @@ class TraineeList extends React.Component {
     });
   };
 
-  handleEdit = (data, value) => {
+  handleEdit = (updatedData) => {
+    this.handleFetchData();
     this.setState(
       {
         EditOpen: false,
       },
       () => {
         console.log('Edit Data');
-        console.log(data);
+        console.log(updatedData);
       }
     );
-    const message = 'This is Success Message';
-    const status = 'success';
-    value(message, status);
   };
 
-  onSubmit = (data) => {
+  onSubmit = (addData) => {
+    this.handleFetchData();
     this.setState(
       {
         open: false,
       },
       () => {
-        console.log(data);
+        console.log(addData);
       }
     );
   };
@@ -189,6 +191,7 @@ class TraineeList extends React.Component {
       orderBy,
       order,
       editData,
+      deleteData,
       data,
       page,
       loader,
@@ -214,18 +217,19 @@ class TraineeList extends React.Component {
         <AddDialog
           open={open}
           onClose={this.handleClose}
-          onSubmit={() => this.onSubmit}
+          onSubmit={this.onSubmit}
         />
         <EditDialog
           Editopen={EditOpen}
           handleEditClose={this.handleEditClose}
-          handleEdit={() => this.handleEdit}
+          handleEdit={this.handleEdit}
           data={editData}
         />
         <DeleteDialog
           openRemove={RemoveOpen}
           onClose={this.handleRemoveClose}
           remove={this.handleRemove}
+          data={deleteData}
         />
         <WrapTable
           loader={loader}
@@ -262,7 +266,7 @@ class TraineeList extends React.Component {
           orderBy={orderBy}
           order={order}
           onSelect={this.handleSelect}
-          count={100}
+          count={data.length}
           page={page}
           rowsPerPage={rowsPerPage}
           onChangePage={this.handleChangePage}

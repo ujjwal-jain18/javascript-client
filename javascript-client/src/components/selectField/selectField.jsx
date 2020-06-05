@@ -4,26 +4,30 @@ import PropTypes from 'prop-types';
 import { Select, Div1 } from './style';
 
 function SelectField(props) {
-  const {
-    input, error, onChange, options, onBlur,
-  } = props;
+  const { input, error, onChange, options, onBlur } = props;
   const { defaultText } = props;
   return (
     <>
       <p>
         <b>{input}</b>
       </p>
-      <Select className={(error === '') ? '' : 'error'} onChange={onChange} error={error} onBlur={onBlur}>
-        { defaultText && <option>{defaultText}</option> }
-        {
-          options && options.length
-          && options.map(({ value, label }) => <option key={label} value={value}>{label}</option>)
-        }
+      <Select
+        className={error === '' ? '' : 'error'}
+        onChange={onChange}
+        error={error}
+        onBlur={onBlur}
+      >
+        {defaultText && <option>{defaultText}</option>}
+        {options &&
+          options.length &&
+          options.map(({ value, label }) => (
+            <option key={label} value={value}>
+              {label}
+            </option>
+          ))}
       </Select>
-      <Div1 className={(error === '') ? 'noerror' : 'error'}>
-        <p>
-          { error }
-        </p>
+      <Div1 className={error === '' ? 'noerror' : 'error'}>
+        <p>{error}</p>
       </Div1>
     </>
   );
